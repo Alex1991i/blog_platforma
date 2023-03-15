@@ -1,0 +1,72 @@
+.card {
+  width: 940px;
+  max-width: 90%;
+  display: grid;
+  padding: 15px;
+  background-color: #ffffff;
+  grid-template-areas:
+    'title favorite name avatar'
+    'tag tag date avatar'
+    'text text delete edit';
+  grid-template-rows: 30px 18px 1fr;
+  grid-template-columns: 200px 1fr 150px 80px;
+  .title {
+    grid-area: title;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #1890ff;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 28px;
+  }
+  .heart {
+    grid-area: favorite;
+  }
+  .name {
+    grid-area: name;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+  }
+  .avatar {
+    grid-area: avatar;
+  }
+  .date {
+    grid-area: date;
+    color: #00000080;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 22px;
+  }
+  .tag {
+    grid-area: tag;
+    display: flex;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+  }
+  .text {
+    grid-area: text;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 22px;
+    overflow: hidden;
+  }
+  .btn-link {
+    grid-area: edit;
+    color: #52c41a;
+    border: 2px solid #52c41a;
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-top: 5px;
+    text-align: center;
+  }
+  .btn-delete {
+    grid-area: delete;
+    height: 34px;
+    width: 100px;
+    margin-top: 5px;
+    margin-right: 10px;
+    justify-self: end;
+  }
+}

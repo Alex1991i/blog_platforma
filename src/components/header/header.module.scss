@@ -1,0 +1,26 @@
+.header {
+  width: 70%;
+  height: 80px;
+  background-color: #ffffff;
+  padding: 22px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto 26px;
+  @media (max-width: 1000px) {
+    width: 90%;
+  }
+  .flex {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .btn-link {
+    color: #52c41a;
+    border: 2px solid #52c41a;
+    padding: 10px;
+    border-radius: 5px;
+  }
+}
