@@ -1,0 +1,10 @@
+.container {
+  margin: 0 15%;
+  background-color: rgb(221, 247, 238);
+  @media (max-width: 1300px) {
+    margin: 0 5%;
+  }
+  @media (max-width: 1000px) {
+    margin: 0 3%;
+  }
+}

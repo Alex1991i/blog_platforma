@@ -1,1 +1,1 @@
-https://blog-platform-azure-six.vercel.app/sing-up
+https://blog-platform-alex1991i.vercel.app
