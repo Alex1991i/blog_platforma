@@ -9,6 +9,7 @@ import { ArticlesList } from '../page/articles-list';
 import { CreateNewArticle } from '../page/create-new-article';
 import { EditArticle } from '../page/edit-article';
 import { EditProfile } from '../page/edit-profile';
+import { NotFound } from '../page/not-found';
 import { SingIn } from '../page/sing-in';
 import { SingUp } from '../page/sing-up';
 import { SinglArticle } from '../page/singl-article';
@@ -53,7 +54,7 @@ const App = () => {
               </RequireAuth>
             }
           />
-          <Route path="*" element={<ArticlesList />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </>

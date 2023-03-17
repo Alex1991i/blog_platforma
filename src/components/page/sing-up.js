@@ -1,26 +1,31 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { singUpUser } from '../../store/user-slice';
+import { isSetNotUserCreate, singUpUser } from '../../store/user-slice';
+import { ErrorMessage } from '../error/error';
 import { UserForms } from '../user-forms/user-forms';
 
 const SingUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   const status = useSelector((state) => state.user.status);
+  const err = useSelector((state) => state.user.error);
   const isCreateUser = useSelector((state) => state.user.userCreate);
-
-  const fromPage = location.state?.from?.pathname || '/';
 
   useEffect(() => {
     if (status === 'resolved' && isCreateUser) {
-      navigate(fromPage, { replace: true });
+      dispatch(isSetNotUserCreate());
+      navigate('/sing-in', { replace: true });
     }
-  }, [status, isCreateUser, navigate, fromPage]);
+  }, [isCreateUser, status, navigate, dispatch]);
 
-  return <UserForms signUp={true} submit={(data) => dispatch(singUpUser(data))} />;
+  return (
+    <>
+      {err && <ErrorMessage />}
+      <UserForms signUp={true} submit={(data) => dispatch(singUpUser(data))} />
+    </>
+  );
 };
 
 export { SingUp };

@@ -17,7 +17,9 @@ export const fetchArticles = createAsyncThunk('articles/fetchArticles', async (p
 
 export const fetchArticleSingle = createAsyncThunk('articles/fetchArticleSingle', async (slug, { rejectWithValue }) =>
   axios
-    .get(`${baseApi}articles/${slug}`)
+    .get(`${baseApi}articles/${slug}`, {
+      headers: { 'Content-Type': 'application/json', Authorization: `Token ${Cookies.get('token')}` },
+    })
     .then((res) => res.data)
     .catch((err) => rejectWithValue(err.message))
 );
@@ -115,7 +117,11 @@ const articlesSlice = createSlice({
     status: 'loading',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setNotCreateArticle(state) {
+      state.isCreateArticle = false;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchArticles.pending, (state) => {
       state.status = 'loading';
@@ -152,10 +158,45 @@ const articlesSlice = createSlice({
       state.isCreateArticle = true;
     });
     builder.addCase(fetchCreateArticle.rejected, (state, action) => {
+      state.isCreateArticle = false;
+      state.status = 'rejected';
+      state.error = action.payload;
+    });
+    builder.addCase(fetchEditArticle.pending, (state) => {
+      state.status = 'loading';
+      state.error = null;
+      state.isCreateArticle = false;
+    });
+    builder.addCase(fetchEditArticle.fulfilled, (state) => {
+      state.status = 'resolved';
+      state.isCreateArticle = true;
+    });
+    builder.addCase(fetchEditArticle.rejected, (state, action) => {
+      state.isCreateArticle = false;
+      state.status = 'rejected';
+      state.error = action.payload;
+    });
+    builder.addCase(fetchDeleteArticle.pending, (state) => {
+      state.status = 'loading';
+      state.error = null;
+    });
+    builder.addCase(fetchDeleteArticle.fulfilled, (state) => {
+      state.status = 'resolved';
+    });
+    builder.addCase(fetchDeleteArticle.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.error = action.payload;
+    });
+    builder.addCase(fetchFavorites.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.error = action.payload;
+    });
+    builder.addCase(fetchDeleteFavorites.rejected, (state, action) => {
       state.status = 'rejected';
       state.error = action.payload;
     });
   },
 });
 
+export const { setNotCreateArticle } = articlesSlice.actions;
 export default articlesSlice.reducer;

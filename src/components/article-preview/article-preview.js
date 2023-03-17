@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import { Avatar, Button, Checkbox } from '@mui/material';
 import { v4 } from 'uuid';
-import { Tag } from 'antd';
 import { format } from 'date-fns';
 import { enGB } from 'date-fns/locale';
+import { message, Popconfirm, Tag } from 'antd';
 
 import { fetchDeleteArticle, fetchDeleteFavorites, fetchFavorites } from '../../store/articles-slice';
 
@@ -17,6 +17,7 @@ const ArticlePreview = ({ article, viewButton }) => {
   const dispatch = useDispatch();
   const username = useSelector((state) => state.user.username);
   const isLogin = useSelector((state) => state.user.isLogin);
+  const navigate = useNavigate();
 
   const [favoriteChecked, setFavoriteChecked] = useState(article?.favorited || false);
   const [favoriteCount, setFavoriteCount] = useState(article.favoritesCount);
@@ -31,6 +32,17 @@ const ArticlePreview = ({ article, viewButton }) => {
       setFavoriteChecked(false);
       setFavoriteCount(favoriteCount - 1);
     }
+  };
+
+  const confirm = () => {
+    dispatch(fetchDeleteArticle()).then(() => {
+      message.success('Article delete');
+      return navigate('/', { replace: true });
+    });
+  };
+
+  const cancel = () => {
+    message.error('Article not delete');
   };
 
   const elements = article.tagList.slice(0, 5).map((tag) => (
@@ -70,15 +82,19 @@ const ArticlePreview = ({ article, viewButton }) => {
           <Link className={classes['btn-link']} to="/articles/:slug/edit">
             Edit
           </Link>
-          <Button
-            className={classes['btn-delete']}
-            size="small"
-            variant="outlined"
-            color="error"
-            onClick={() => dispatch(fetchDeleteArticle())}
+          <Popconfirm
+            title="Delete the article"
+            description="Are you sure to delete this article?"
+            onConfirm={confirm}
+            onCancel={cancel}
+            okText="Yes"
+            cancelText="No"
+            placement={'right'}
           >
-            Delete
-          </Button>
+            <Button className={classes['btn-delete']} size="small" variant="outlined" color="error">
+              Delete
+            </Button>
+          </Popconfirm>
         </>
       )}
     </div>
