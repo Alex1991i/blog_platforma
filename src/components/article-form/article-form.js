@@ -12,6 +12,7 @@ const ArticleForm = ({ title = 'Create new article', submit, article }) => {
     register,
     formState: { errors },
     handleSubmit,
+    resetField,
   } = useForm({
     mode: 'onBlur',
     defaultValues: {
@@ -22,7 +23,13 @@ const ArticleForm = ({ title = 'Create new article', submit, article }) => {
   });
 
   const onSubmit = (data) => {
-    submit(data);
+    const dataForm = Object.keys(data).reduce((acc, key) => {
+      if (data[key] !== undefined) {
+        acc[key] = data[key];
+      }
+      return acc;
+    }, {});
+    submit(dataForm);
   };
 
   const [tagList, setTagList] = useState(
@@ -35,6 +42,7 @@ const ArticleForm = ({ title = 'Create new article', submit, article }) => {
 
   const deleteTag = (id) => {
     setTagList((state) => state.filter((tag) => tag.id !== id));
+    resetField(`${id}`);
   };
 
   const elements = tagList.map((tag) => (
