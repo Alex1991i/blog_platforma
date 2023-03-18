@@ -136,7 +136,12 @@ const userSlice = createSlice({
       rejected(state, action);
     });
     builder.addCase(getCurrentUser.fulfilled, (state, action) => {
-      fulfilled(state, action);
+      state.status = 'resolved';
+      state.isLogin = true;
+      state.userCreate = false;
+      state.username = action.payload.user.username;
+      state.email = action.payload.user.email;
+      state.image = action.payload.user.image;
     });
     builder.addCase(getCurrentUser.rejected, (state, action) => {
       state.error = action.payload;
