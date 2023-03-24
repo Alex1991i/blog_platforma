@@ -17,8 +17,6 @@ const Header = () => {
   const statusUser = useSelector((state) => state.user.status);
   const statusArticle = useSelector((state) => state.articles.status);
 
-  console.log(statusUser, statusArticle);
-
   return (
     <header className={classes.header}>
       <div>
