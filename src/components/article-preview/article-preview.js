@@ -10,6 +10,7 @@ import { enGB } from 'date-fns/locale';
 import { message, Popconfirm, Tag } from 'antd';
 
 import { fetchDeleteArticle, fetchDeleteFavorites, fetchFavorites } from '../../store/articles-slice';
+import { PATH } from '../../util/constants';
 
 import classes from './article-preview.module.scss';
 
@@ -79,7 +80,7 @@ const ArticlePreview = ({ article, viewButton }) => {
       <div className={classes.text}>{article.description}</div>
       {viewButton && username === article.author.username && (
         <>
-          <Link className={classes['btn-link']} to="/articles/:slug/edit">
+          <Link className={classes['btn-link']} to={PATH.editArticle}>
             Edit
           </Link>
           <Popconfirm

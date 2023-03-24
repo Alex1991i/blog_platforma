@@ -1,47 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import Cookies from 'js-cookie';
 
-const baseApi = 'https://blog.kata.academy/api/';
+import { blogServiceArticle } from '../service/blog-service-article';
 
 export const fetchArticles = createAsyncThunk('articles/fetchArticles', async (page, { rejectWithValue }) =>
-  axios
-    .get(`${baseApi}articles?offset=${(page - 1) * 5}&limit=5`, {
-      headers: { 'Content-Type': 'application/json', Authorization: `Token ${Cookies.get('token')}` },
-    })
-    .then((res) => res.data)
-    .catch((err) => {
-      return rejectWithValue(err.message);
-    })
+  blogServiceArticle.getArticles(page).catch((err) => {
+    return rejectWithValue(err.message);
+  })
 );
 
 export const fetchArticleSingle = createAsyncThunk('articles/fetchArticleSingle', async (slug, { rejectWithValue }) =>
-  axios
-    .get(`${baseApi}articles/${slug}`, {
-      headers: { 'Content-Type': 'application/json', Authorization: `Token ${Cookies.get('token')}` },
-    })
-    .then((res) => res.data)
-    .catch((err) => rejectWithValue(err.message))
+  blogServiceArticle.getArticle(slug).catch((err) => {
+    return rejectWithValue(err.message);
+  })
 );
 
 export const fetchCreateArticle = createAsyncThunk(
   'articles/fetchCreateArticle',
   async ({ title, description, text: body, ...tags }, { rejectWithValue }) => {
     const tagList = Object.values(tags);
-    return axios
-      .post(
-        `${baseApi}articles`,
-        {
-          article: {
-            title,
-            description,
-            body,
-            tagList,
-          },
-        },
-        { headers: { 'Content-Type': 'application/json', Authorization: `Token ${Cookies.get('token')}` } }
-      )
-      .then((res) => res.data)
+    return blogServiceArticle
+      .createArticle(title, description, body, tagList)
       .catch((err) => rejectWithValue(err.message));
   }
 );
@@ -51,20 +29,8 @@ export const fetchEditArticle = createAsyncThunk(
   async ({ title, description, text: body, ...tags }, { rejectWithValue, getState }) => {
     const tagList = Object.values(tags);
     const slug = getState().articles.articleSingle.slug;
-    return axios
-      .put(
-        `${baseApi}articles/${slug}`,
-        {
-          article: {
-            title,
-            description,
-            body,
-            tagList,
-          },
-        },
-        { headers: { 'Content-Type': 'application/json', Authorization: `Token ${Cookies.get('token')}` } }
-      )
-      .then((res) => res.data)
+    return blogServiceArticle
+      .editArticle(slug, title, description, body, tagList)
       .catch((err) => rejectWithValue(err.message));
   }
 );
@@ -73,37 +39,18 @@ export const fetchDeleteArticle = createAsyncThunk(
   'articles/fetchDeleteArticle',
   async (_, { rejectWithValue, getState }) => {
     const slug = getState().articles.articleSingle.slug;
-    return axios
-      .delete(`${baseApi}articles/${slug}`, {
-        headers: { 'Content-Type': 'application/json', Authorization: `Token ${Cookies.get('token')}` },
-      })
-      .then((res) => res.data)
-      .catch((err) => rejectWithValue(err.message));
+    return blogServiceArticle.deleteArticle(slug).catch((err) => rejectWithValue(err.message));
   }
 );
 
 export const fetchFavorites = createAsyncThunk('articles/fetchFavorites', async (slug, { rejectWithValue }) => {
-  return axios
-    .post(
-      `${baseApi}articles/${slug}/favorite`,
-      {},
-      {
-        headers: { 'Content-Type': 'application/json', Authorization: `Token ${Cookies.get('token')}` },
-      }
-    )
-    .then((res) => res.data)
-    .catch((err) => rejectWithValue(err.message));
+  return blogServiceArticle.setFavorite(slug).catch((err) => rejectWithValue(err.message));
 });
 
 export const fetchDeleteFavorites = createAsyncThunk(
   'articles/fetchDeleteFavorites',
   async (slug, { rejectWithValue }) => {
-    return axios
-      .delete(`${baseApi}articles/${slug}/favorite`, {
-        headers: { 'Content-Type': 'application/json', Authorization: `Token ${Cookies.get('token')}` },
-      })
-      .then((res) => res.data)
-      .catch((err) => rejectWithValue(err.message));
+    return blogServiceArticle.deleteFavorite(slug).catch((err) => rejectWithValue(err.message));
   }
 );
 

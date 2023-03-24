@@ -32,6 +32,7 @@ const SingInForm = ({ submit }) => {
         <TextField
           id="email"
           label="Email address"
+          type="email"
           variant="outlined"
           size="small"
           fullWidth
@@ -43,6 +44,7 @@ const SingInForm = ({ submit }) => {
         <TextField
           id="password"
           label="Password"
+          type="password"
           variant="outlined"
           size="small"
           fullWidth

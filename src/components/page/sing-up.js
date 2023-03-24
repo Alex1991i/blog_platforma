@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { isSetNotUserCreate, singUpUser } from '../../store/user-slice';
+import { PATH } from '../../util/constants';
 import { ErrorMessage } from '../error/error';
 import { UserForms } from '../user-forms/user-forms';
 
@@ -16,7 +17,7 @@ const SingUp = () => {
   useEffect(() => {
     if (status === 'resolved' && isCreateUser) {
       dispatch(isSetNotUserCreate());
-      navigate('/sing-in', { replace: true });
+      navigate(PATH.singIn, { replace: true });
     }
   }, [isCreateUser, status, navigate, dispatch]);
 

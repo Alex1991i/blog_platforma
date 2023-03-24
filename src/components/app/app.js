@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { RequireAuth } from '../../hoc/RequireAuth';
 import { getCurrentUser } from '../../store/user-slice';
+import { PATH } from '../../util/constants';
 import Layout from '../layout/layout';
 import { ArticlesList } from '../page/articles-list';
 import { CreateNewArticle } from '../page/create-new-article';
@@ -26,12 +27,12 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<ArticlesList />} />
-          <Route path="articles" element={<Navigate to={'/'} replace />} />
-          <Route path="articles/:slug" element={<SinglArticle />} />
-          <Route path="sing-up" element={<SingUp />} />
-          <Route path="sing-in" element={<SingIn />} />
+          <Route path={PATH.articles} element={<Navigate to={'/'} replace />} />
+          <Route path={PATH.article} element={<SinglArticle />} />
+          <Route path={PATH.singUp} element={<SingUp />} />
+          <Route path={PATH.singIn} element={<SingIn />} />
           <Route
-            path="profile"
+            path={PATH.profile}
             element={
               <RequireAuth>
                 <EditProfile />
@@ -39,7 +40,7 @@ const App = () => {
             }
           />
           <Route
-            path="new-article"
+            path={PATH.newArticle}
             element={
               <RequireAuth>
                 <CreateNewArticle />
@@ -47,7 +48,7 @@ const App = () => {
             }
           />
           <Route
-            path="articles/:slug/edit"
+            path={PATH.editArticle}
             element={
               <RequireAuth>
                 <EditArticle />
